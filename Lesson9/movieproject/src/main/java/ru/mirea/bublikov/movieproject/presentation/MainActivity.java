@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import ru.mirea.bublikov.movieproject.R;
 import ru.mirea.bublikov.movieproject.data.repository.MovieRepositoryImpl;
+import ru.mirea.bublikov.movieproject.data.storage.MovieStorage;
+import ru.mirea.bublikov.movieproject.data.storage.SharedPrefMovieStorage;
 import ru.mirea.bublikov.movieproject.domain.models.Movie;
 import ru.mirea.bublikov.movieproject.domain.repository.MovieRepository;
 import ru.mirea.bublikov.movieproject.domain.usecases.GetFavoriteFilmUseCase;
@@ -26,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MovieRepository movieRepository = new MovieRepositoryImpl(this);
+        MovieStorage storage = new SharedPrefMovieStorage(this);
+        MovieRepository movieRepository = new MovieRepositoryImpl(storage);
         GetFavoriteFilmUseCase getFavoriteFilmUseCase = new GetFavoriteFilmUseCase(movieRepository);
         SaveMovieToFavoriteUseCase saveMovieToFavoriteUseCase = new SaveMovieToFavoriteUseCase(movieRepository);
 

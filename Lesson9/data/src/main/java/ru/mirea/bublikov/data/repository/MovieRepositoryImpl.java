@@ -1,11 +1,8 @@
-package ru.mirea.bublikov.movieproject.data.repository;
+package ru.mirea.bublikov.data.repository;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import ru.mirea.bublikov.movieproject.data.storage.MovieStorage;
-import ru.mirea.bublikov.movieproject.domain.models.Movie;
-import ru.mirea.bublikov.movieproject.domain.repository.MovieRepository;
+import ru.mirea.bublikov.data.storage.MovieStorage;
+import ru.mirea.bublikov.domain.models.Movie;
+import ru.mirea.bublikov.domain.repository.MovieRepository;
 
 public class MovieRepositoryImpl implements MovieRepository {
     private final MovieStorage movieStorage;
