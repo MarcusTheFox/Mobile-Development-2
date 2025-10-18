@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "225548958841",
+    "project_id": "shoppinglist-7afe3",
+    "storage_bucket": "shoppinglist-7afe3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225548958841:android:f19919954d2d3318fde8a8",
+        "android_client_info": {
+          "package_name": "ru.mirea.bublikov.shoppinglist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3TKvqc1oA5g22F-67p4xMX_Rl8ahNSTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
