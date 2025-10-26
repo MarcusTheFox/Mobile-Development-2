@@ -1,4 +1,4 @@
-package ru.mirea.bublikov.lesson9;
+package ru.mirea.bublikov.lesson9.presentation;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,47 +7,48 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import ru.mirea.bublikov.data.repository.MovieRepositoryImpl;
-import ru.mirea.bublikov.data.storage.SharedPrefMovieStorage;
-import ru.mirea.bublikov.data.storage.MovieStorage;
 import ru.mirea.bublikov.domain.models.Movie;
-import ru.mirea.bublikov.domain.repository.MovieRepository;
-import ru.mirea.bublikov.domain.usecases.GetFavoriteFilmUseCase;
-import ru.mirea.bublikov.domain.usecases.SaveMovieToFavoriteUseCase;
+import ru.mirea.bublikov.lesson9.R;
 
 public class MainActivity extends AppCompatActivity {
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MovieStorage storage = new SharedPrefMovieStorage(this);
-        MovieRepository movieRepository = new MovieRepositoryImpl(storage);
-        GetFavoriteFilmUseCase getFavoriteFilmUseCase = new GetFavoriteFilmUseCase(movieRepository);
-        SaveMovieToFavoriteUseCase saveMovieToFavoriteUseCase = new SaveMovieToFavoriteUseCase(movieRepository);
+        ViewModelFactory factory = new ViewModelFactory(this);
+        mainViewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
 
         TextView textViewMovie = findViewById(R.id.textViewMovie);
         EditText editTextMovie = findViewById(R.id.editTextMovie);
         Button buttonSaveMovie = findViewById(R.id.buttonSaveMovie);
         Button buttonGetMovie = findViewById(R.id.buttonGetMovie);
 
+        mainViewModel.getFavoriteMovie().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                textViewMovie.setText(s);
+            }
+        });
+
         buttonSaveMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String text = editTextMovie.getText().toString();
                 Movie movie = new Movie(2, text);
-                boolean result = saveMovieToFavoriteUseCase.execute(movie);
-                textViewMovie.setText(String.format("Save result %s", result));
+                mainViewModel.setText(movie);
             }
         });
 
         buttonGetMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Movie movie = getFavoriteFilmUseCase.execute();
-                textViewMovie.setText(String.format("Movie name: %s", movie.getName()));
+                mainViewModel.getText();
             }
         });
     }

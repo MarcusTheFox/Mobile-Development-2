@@ -9,7 +9,7 @@
     android:padding="32dp"
     app:flow_verticalGap="32dp"
     android:gravity="center_horizontal"
-    tools:context=".MainActivity">
+    tools:context=".presentation.MainActivity">
 
     <TextView
         android:id="@+id/textViewMovie"
