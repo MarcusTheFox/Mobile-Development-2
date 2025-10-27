@@ -10,9 +10,9 @@ public class InMemoryShoppingListStorage implements ShoppingListStorage {
     private int autoIncrementId = 0;
 
     public InMemoryShoppingListStorage() {
-        add(new ShopItem("Хлеб", 1, true));
-        add(new ShopItem("Молоко", 2, false));
-        add(new ShopItem("Сыр", 1, false));
+        add(new ShopItem("Хлеб", 1, 150, true));
+        add(new ShopItem("Молоко", 2, 100, false));
+        add(new ShopItem("Сыр", 1, 500, false));
     }
 
     @Override

@@ -22,6 +22,7 @@ public class ShoppingListRepositoryImpl implements ShoppingListRepository {
     public ShoppingListRepositoryImpl(Context context) {
         database = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, "database.db")
+                .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
         networkApi = new MockNetworkApi();
@@ -30,19 +31,16 @@ public class ShoppingListRepositoryImpl implements ShoppingListRepository {
     @Override
     public void addShopItem(ShopItem shopItem) {
         database.shopListDao().addShopItem(mapper.mapEntityToDbModel(shopItem));
-        networkApi.syncData(getShopList());
     }
 
     @Override
     public void deleteShopItem(ShopItem shopItem) {
         database.shopListDao().deleteShopItem(shopItem.getId());
-        networkApi.syncData(getShopList());
     }
 
     @Override
     public void editShopItem(ShopItem shopItem) {
         database.shopListDao().addShopItem(mapper.mapEntityToDbModel(shopItem));
-        networkApi.syncData(getShopList());
     }
 
     @Override
@@ -59,7 +57,13 @@ public class ShoppingListRepositoryImpl implements ShoppingListRepository {
 
     @Override
     public void markShopItem(ShopItem shopItem) {
-        shopItem.setEnabled(!shopItem.isEnabled());
-        editShopItem(shopItem);
+        ShopItemDbModel currentItemFromDb = database.shopListDao().getShopItem(shopItem.getId());
+        currentItemFromDb.enabled = !currentItemFromDb.enabled;
+        database.shopListDao().addShopItem(currentItemFromDb);
+    }
+
+    @Override
+    public void syncWithNetwork() {
+        networkApi.syncData(getShopList());
     }
 }

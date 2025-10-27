@@ -1,50 +1,85 @@
 package ru.mirea.bublikov.shoppinglist.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import ru.mirea.bublikov.data.repository.ShoppingListRepositoryImpl;
-import ru.mirea.bublikov.domain.models.ShopItem;
-import ru.mirea.bublikov.domain.repository.ShoppingListRepository;
-import ru.mirea.bublikov.domain.usecases.GetShoppingListUseCase;
 import ru.mirea.bublikov.shoppinglist.R;
 
 public class MainActivity extends AppCompatActivity {
-    private GetShoppingListUseCase getShoppingListUseCase;
-
-    private TextView tvShopList;
+    private MainViewModel mainViewModel;
+    private ShopListAdapter shopListAdapter;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private FloatingActionButton fabAddItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ShoppingListRepository repository = new ShoppingListRepositoryImpl(this);
-        getShoppingListUseCase = new GetShoppingListUseCase(repository);
+        recyclerView = findViewById(R.id.recyclerViewShopList);
+        progressBar = findViewById(R.id.progressBar);
+        fabAddItem = findViewById(R.id.fabAddItem);
 
-        tvShopList = findViewById(R.id.tv_shop_list);
+        ViewModelFactory factory = new ViewModelFactory(this);
+        mainViewModel = new ViewModelProvider(this, factory).get(MainViewModel.class);
 
-        showShopList();
+        setupRecyclerView();
+        observeViewModel();
+        setupClickListeners();
+
+        if (savedInstanceState == null) {
+            mainViewModel.initialLoad();
+        }
     }
 
-    private void showShopList() {
-        List<ShopItem> shopList = getShoppingListUseCase.execute();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainViewModel.loadShopList();
+    }
 
-        if (!shopList.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (ShopItem item : shopList) {
-                sb.append(item.getName())
-                        .append(", кол-во: ").append(item.getCount())
-                        .append(", куплен: ").append(item.isEnabled())
-                        .append("\n\n");
-            }
-            tvShopList.setText(sb.toString());
-        } else {
-            tvShopList.setText("Список покупок пуст");
-        }
+    private void observeViewModel() {
+        mainViewModel.getShopList().observe(this, list -> {
+            shopListAdapter.submitList(list);
+        });
+
+        mainViewModel.getIsLoading().observe(this, isLoading -> {
+            progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(isLoading ? View.GONE : View.VISIBLE);
+        });
+    }
+
+    private void setupRecyclerView() {
+        shopListAdapter = new ShopListAdapter();
+        recyclerView.setAdapter(shopListAdapter);
+    }
+
+    private void setupClickListeners() {
+        fabAddItem.setOnClickListener(v -> {
+            Intent intent = ShopItemActivity.newIntentAddItem(this);
+            startActivity(intent);
+        });
+
+        shopListAdapter.setOnShopItemClickListener(shopItem -> {
+            Intent intent = ShopItemActivity.newIntentEditItem(this, shopItem.getId());
+            startActivity(intent);
+        });
+
+        shopListAdapter.setOnMarkItemClickListener(shopItem -> {
+            mainViewModel.markShopItem(shopItem);
+        });
+
+        shopListAdapter.setOnDeleteItemClickListener(shopItem -> {
+            mainViewModel.deleteShopItem(shopItem);
+        });
     }
 }

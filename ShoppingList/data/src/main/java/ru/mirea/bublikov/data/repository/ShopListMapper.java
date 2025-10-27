@@ -8,7 +8,7 @@ import ru.mirea.bublikov.domain.models.ShopItem;
 
 public class ShopListMapper {
     public ShopItem mapDbModelToEntity(ShopItemDbModel dbModel) {
-        ShopItem entity = new ShopItem(dbModel.name, dbModel.count, dbModel.enabled);
+        ShopItem entity = new ShopItem(dbModel.name, dbModel.count, dbModel.price, dbModel.enabled);
         entity.setId(dbModel.id);
         return entity;
     }
@@ -21,6 +21,7 @@ public class ShopListMapper {
         }
         dbModel.name = entity.getName();
         dbModel.count = entity.getCount();
+        dbModel.price = entity.getPrice();
         dbModel.enabled = entity.isEnabled();
         return dbModel;
     }

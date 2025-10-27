@@ -11,4 +11,5 @@ public interface ShoppingListRepository {
     void markShopItem(ShopItem shopItem);
     ShopItem getShopItem(int shopItemId);
     List<ShopItem> getShopList();
+    void syncWithNetwork();
 }
