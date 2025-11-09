@@ -13,7 +13,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/listviewapp" />
             <option value="$PROJECT_DIR$/movieproject" />
+            <option value="$PROJECT_DIR$/recyclerviewapp" />
+            <option value="$PROJECT_DIR$/scrollviewapp" />
           </set>
         </option>
       </GradleProjectSettings>
