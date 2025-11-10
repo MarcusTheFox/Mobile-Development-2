@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -50,7 +51,7 @@ public class ShopListAdapter extends ListAdapter<ShopItem, ShopListAdapter.ShopI
 
         holder.textViewName.setText(shopItem.getName());
         holder.textViewCount.setText(String.format("Кол-во: %d", shopItem.getCount()));
-        holder.textViewPrice.setText(String.format("%.2f руб./шт.", shopItem.getPrice()));
+        holder.textViewPrice.setText(String.format("%.2f %s / шт.", shopItem.getPrice(), shopItem.getCurrency().toString()));
 
         holder.checkBoxEnabled.setOnCheckedChangeListener(null);
         holder.checkBoxEnabled.setChecked(shopItem.isEnabled());
@@ -73,10 +74,11 @@ public class ShopListAdapter extends ListAdapter<ShopItem, ShopListAdapter.ShopI
             }
         });
 
-        int backgroundColorResId = shopItem.isEnabled()
-                ? android.R.color.holo_green_light
-                : android.R.color.white;
-        holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), backgroundColorResId));
+        int colorActive = ContextCompat.getColor(holder.itemView.getContext(), R.color.active_item_color);
+        int colorInactive = ContextCompat.getColor(holder.itemView.getContext(), R.color.inactive_item_color);
+        int cardBackgroundColor = shopItem.isEnabled() ? colorActive : colorInactive;
+
+        holder.cardView.setCardBackgroundColor(cardBackgroundColor);
     }
 
     public static class ShopItemViewHolder extends RecyclerView.ViewHolder {
@@ -85,9 +87,11 @@ public class ShopListAdapter extends ListAdapter<ShopItem, ShopListAdapter.ShopI
         final TextView textViewPrice;
         final ImageButton buttonDelete;
         final CheckBox checkBoxEnabled;
+        final CardView cardView;
 
         public ShopItemViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = (CardView) itemView;
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewCount = itemView.findViewById(R.id.textViewCount);
             textViewPrice = itemView.findViewById(R.id.textViewPrice);

@@ -10,5 +10,6 @@ public class ShopItemDbModel {
     public String name;
     public int count;
     public double price;
+    public String currency;
     public boolean enabled;
 }

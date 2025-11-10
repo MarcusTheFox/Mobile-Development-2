@@ -3,6 +3,7 @@ package ru.mirea.bublikov.data.storage;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.mirea.bublikov.domain.models.CurrencyCode;
 import ru.mirea.bublikov.domain.models.ShopItem;
 
 public class InMemoryShoppingListStorage implements ShoppingListStorage {
@@ -10,9 +11,9 @@ public class InMemoryShoppingListStorage implements ShoppingListStorage {
     private int autoIncrementId = 0;
 
     public InMemoryShoppingListStorage() {
-        add(new ShopItem("Хлеб", 1, 150, true));
-        add(new ShopItem("Молоко", 2, 100, false));
-        add(new ShopItem("Сыр", 1, 500, false));
+        add(new ShopItem("Хлеб", 1, 150, CurrencyCode.RUB, true));
+        add(new ShopItem("Молоко", 2, 100, CurrencyCode.RUB, false));
+        add(new ShopItem("Сыр", 1, 500, CurrencyCode.RUB, false));
     }
 
     @Override

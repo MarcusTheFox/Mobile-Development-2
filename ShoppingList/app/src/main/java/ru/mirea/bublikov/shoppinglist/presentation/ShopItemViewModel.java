@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import ru.mirea.bublikov.domain.models.CurrencyCode;
 import ru.mirea.bublikov.domain.models.ShopItem;
 import ru.mirea.bublikov.domain.repository.ShoppingListRepository;
 import ru.mirea.bublikov.domain.usecases.AddItemToListUseCase;
@@ -28,7 +29,7 @@ public class ShopItemViewModel extends ViewModel {
         _shopItem.setValue(item);
     }
 
-    public void saveShopItem(String inputName, String inputCount, String inputPrice) {
+    public void saveShopItem(String inputName, String inputCount, String inputPrice, CurrencyCode inputCurrency) {
         int count = Integer.parseInt(inputCount);
         double price = Double.parseDouble(inputPrice);
 
@@ -39,9 +40,10 @@ public class ShopItemViewModel extends ViewModel {
                 currentItem.setName(inputName);
                 currentItem.setCount(count);
                 currentItem.setPrice(price);
+                currentItem.setCurrency(inputCurrency);
                 new EditItemUseCase(repository).execute(currentItem);
             } else {
-                new AddItemToListUseCase(repository).execute(new ShopItem(inputName, count, price, false));
+                new AddItemToListUseCase(repository).execute(new ShopItem(inputName, count, price, inputCurrency, false));
             }
             _shouldCloseScreen.postValue(true);
         }).start();

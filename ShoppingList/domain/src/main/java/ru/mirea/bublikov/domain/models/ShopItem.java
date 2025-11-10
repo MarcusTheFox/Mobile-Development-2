@@ -9,12 +9,14 @@ public class ShopItem {
     private String name;
     private int count;
     private double price;
+    private CurrencyCode currency;
     private boolean enabled;
 
-    public ShopItem(String name, int count, double price, boolean enabled) {
+    public ShopItem(String name, int count, double price, CurrencyCode currency, boolean enabled) {
         this.name = name;
         this.count = count;
         this.price = price;
+        this.currency = currency;
         this.enabled = enabled;
         this.id = UNDEFINED_ID;
     }
@@ -27,6 +29,8 @@ public class ShopItem {
     public void setCount(int count) { this.count = count; }
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+    public CurrencyCode getCurrency() { return currency; }
+    public void setCurrency(CurrencyCode currency) { this.currency = currency; }
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
@@ -38,11 +42,12 @@ public class ShopItem {
         return id == shopItem.id && count == shopItem.count &&
                 enabled == shopItem.enabled &&
                 Double.compare(shopItem.price, price) == 0 &&
+                Objects.equals(currency, shopItem.currency) &&
                 Objects.equals(name, shopItem.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, count, enabled, price);
+        return Objects.hash(id, name, count, enabled, price, currency);
     }
 }

@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.mirea.bublikov.data.storage.database.ShopItemDbModel;
+import ru.mirea.bublikov.domain.models.CurrencyCode;
 import ru.mirea.bublikov.domain.models.ShopItem;
 
 public class ShopListMapper {
     public ShopItem mapDbModelToEntity(ShopItemDbModel dbModel) {
-        ShopItem entity = new ShopItem(dbModel.name, dbModel.count, dbModel.price, dbModel.enabled);
+        ShopItem entity = new ShopItem(
+                dbModel.name,
+                dbModel.count,
+                dbModel.price,
+                CurrencyCode.valueOf(dbModel.currency),
+                dbModel.enabled);
         entity.setId(dbModel.id);
         return entity;
     }
@@ -22,6 +28,7 @@ public class ShopListMapper {
         dbModel.name = entity.getName();
         dbModel.count = entity.getCount();
         dbModel.price = entity.getPrice();
+        dbModel.currency = entity.getCurrency().name();
         dbModel.enabled = entity.isEnabled();
         return dbModel;
     }
