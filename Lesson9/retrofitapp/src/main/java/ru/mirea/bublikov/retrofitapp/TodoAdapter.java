@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoViewHolder> {
@@ -32,11 +34,20 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoViewHolder> {
         Todo todo = todos.get(position);
         holder.textViewTitle.setText(todo.getTitle());
         holder.checkBoxCompleted.setChecked(todo.getCompleted());
-        holder.checkBoxCompleted.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        holder.checkBoxCompleted.setOnClickListener(v -> {
+            boolean isChecked = holder.checkBoxCompleted.isChecked();
             if (listener != null) {
                 listener.onTodoCheckedChanged(todo, isChecked);
             }
         });
+
+        String imageUrl = "https://robohash.org/" + todo.getId() + "?set=set2";
+
+        Picasso.get()
+                .load(imageUrl)
+                .resize(200, 150)
+                .centerCrop()
+                .into(holder.imageView);
     }
 
     @Override
