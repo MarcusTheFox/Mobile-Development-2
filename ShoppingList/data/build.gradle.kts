@@ -31,6 +31,9 @@ android {
 dependencies {
 
     implementation(project(":domain"))
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.picasso)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.firebase.auth)

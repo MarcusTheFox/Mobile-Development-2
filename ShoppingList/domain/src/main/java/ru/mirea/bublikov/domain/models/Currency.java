@@ -11,6 +11,5 @@ public class Currency {
 
     public CurrencyCode getCode() { return code; }
     public String getName() { return code.getFullName(); }
-    public String getFlagName() { return code.getFlagName(); }
     public double getRate() { return rate; }
 }

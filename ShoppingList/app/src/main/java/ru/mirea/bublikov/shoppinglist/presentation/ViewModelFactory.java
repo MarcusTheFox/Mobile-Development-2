@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import ru.mirea.bublikov.data.repository.CurrencyRepositoryImpl;
+import ru.mirea.bublikov.data.repository.NetworkCurrencyRepositoryImpl;
 import ru.mirea.bublikov.data.repository.ShoppingListRepositoryImpl;
 import ru.mirea.bublikov.domain.repository.CurrencyRepository;
 import ru.mirea.bublikov.domain.repository.ShoppingListRepository;
@@ -29,7 +29,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         } else if (modelClass.isAssignableFrom(ShopItemViewModel.class)) {
             return (T) new ShopItemViewModel(repository);
         } else if (modelClass.isAssignableFrom(CurrencyViewModel.class)) {
-            CurrencyRepository currencyRepository = new CurrencyRepositoryImpl();
+            CurrencyRepository currencyRepository = new NetworkCurrencyRepositoryImpl();
             return (T) new CurrencyViewModel(currencyRepository);
         }
 

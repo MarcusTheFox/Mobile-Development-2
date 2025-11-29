@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +17,14 @@ import ru.mirea.bublikov.shoppinglist.R;
 
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyViewHolder> {
     private List<Currency> currencies = new ArrayList<>();
-    private Context context;
 
     public void setItems(List<Currency> items) {
         this.currencies = items;
+        notifyDataSetChanged();
     }
 
     @Override
     public CurrencyViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_item, parent, false);
         return new CurrencyViewHolder(view);
     }
@@ -31,15 +32,16 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyViewHolder> {
     @Override
     public void onBindViewHolder(CurrencyViewHolder holder, int position) {
         Currency currency = currencies.get(position);
-        int flagResId = context.getResources().getIdentifier(
-                currency.getFlagName(),
-                "drawable",
-                context.getPackageName()
-        );
+        String countryCode = currency.getCode().getCountryCode();
+        String flagUrl = "https://flagcdn.com/w160/" + countryCode + ".png";
 
         holder.getTextName().setText(String.format("%s (%s)", currency.getName(), currency.getCode()));
         holder.getTextRate().setText(String.format("%.2f RUB", currency.getRate()));
-        holder.getImageFlag().setImageResource(flagResId);
+        Picasso.get()
+                .load(flagUrl)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imageFlag);
     }
 
     @Override public int getItemCount() { return currencies.size(); }

@@ -11,6 +11,7 @@ import ru.mirea.bublikov.domain.repository.CurrencyRepository;
 import ru.mirea.bublikov.domain.usecases.GetCurrencyRatesUseCase;
 
 public class CurrencyViewModel extends ViewModel {
+    private final GetCurrencyRatesUseCase getCurrencyRatesUseCase;
     private final MutableLiveData<List<Currency>> currencyList = new MutableLiveData<>();
 
     public LiveData<List<Currency>> getCurrencyList() {
@@ -18,7 +19,14 @@ public class CurrencyViewModel extends ViewModel {
     }
 
     public CurrencyViewModel(CurrencyRepository repository) {
-        List<Currency> rates = new GetCurrencyRatesUseCase(repository).execute();
-        currencyList.setValue(rates);
+        this.getCurrencyRatesUseCase = new GetCurrencyRatesUseCase(repository);
+        loadCurrencies();
+    }
+
+    private void loadCurrencies() {
+        new Thread(() -> {
+            List<Currency> rates = getCurrencyRatesUseCase.execute();
+            currencyList.postValue(rates);
+        }).start();
     }
 }
