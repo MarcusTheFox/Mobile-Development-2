@@ -10,6 +10,8 @@ import ru.mirea.bublikov.data.network.MockNetworkApi;
 import ru.mirea.bublikov.data.network.NetworkApi;
 import ru.mirea.bublikov.data.storage.database.AppDatabase;
 import ru.mirea.bublikov.data.storage.database.ShopItemDbModel;
+import ru.mirea.bublikov.data.storage.sharedprefs.ClientStorage;
+import ru.mirea.bublikov.data.storage.sharedprefs.SharedPrefsClientStorage;
 import ru.mirea.bublikov.domain.models.ShopItem;
 import ru.mirea.bublikov.domain.repository.ShoppingListRepository;
 
@@ -17,6 +19,7 @@ public class ShoppingListRepositoryImpl implements ShoppingListRepository {
 
     private final AppDatabase database;
     private final NetworkApi networkApi;
+    private final ClientStorage clientStorage;
     private final ShopListMapper mapper = new ShopListMapper();
 
     public ShoppingListRepositoryImpl(Context context) {
@@ -26,6 +29,7 @@ public class ShoppingListRepositoryImpl implements ShoppingListRepository {
                 .allowMainThreadQueries()
                 .build();
         networkApi = new MockNetworkApi();
+        clientStorage = new SharedPrefsClientStorage(context);
     }
 
     @Override
@@ -65,5 +69,15 @@ public class ShoppingListRepositoryImpl implements ShoppingListRepository {
     @Override
     public void syncWithNetwork() {
         networkApi.syncData(getShopList());
+    }
+
+    @Override
+    public void saveUserEmail(String email) {
+        clientStorage.saveEmail(email);
+    }
+
+    @Override
+    public String getUserEmail() {
+        return clientStorage.getEmail();
     }
 }

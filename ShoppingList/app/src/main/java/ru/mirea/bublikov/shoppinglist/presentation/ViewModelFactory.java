@@ -31,6 +31,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         } else if (modelClass.isAssignableFrom(CurrencyViewModel.class)) {
             CurrencyRepository currencyRepository = new NetworkCurrencyRepositoryImpl();
             return (T) new CurrencyViewModel(currencyRepository);
+        } else if (modelClass.isAssignableFrom(ProfileViewModel.class)) {
+            return (T) new ProfileViewModel(repository);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());

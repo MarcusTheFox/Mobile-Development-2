@@ -12,4 +12,6 @@ public interface ShoppingListRepository {
     ShopItem getShopItem(int shopItemId);
     List<ShopItem> getShopList();
     void syncWithNetwork();
+    void saveUserEmail(String email);
+    String getUserEmail();
 }
