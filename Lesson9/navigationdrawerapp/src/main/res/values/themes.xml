@@ -1,9 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Lesson9" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#009688</item>
+        <item name="colorPrimaryVariant">#00796B</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+
+        <item name="android:statusBarColor">@android:color/black</item>
     </style>
 
     <style name="Theme.Lesson9" parent="Base.Theme.Lesson9" />
+
+    <style name="Theme.Navigation.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
