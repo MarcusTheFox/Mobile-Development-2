@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/action_shop_list">
+
+    <fragment
+        android:id="@+id/action_shop_list"
+        android:name="ru.mirea.bublikov.shoppinglist.presentation.MainFragment"
+        android:label="Список покупок"
+        tools:layout="@layout/fragment_shop_list">
+
+        <action
+            android:id="@+id/action_mainFragment_to_shopItemFragment"
+            app:destination="@id/shopItemFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/action_profile"
+        android:name="ru.mirea.bublikov.shoppinglist.presentation.ProfileFragment"
+        android:label="Профиль"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/shopItemFragment"
+        android:name="ru.mirea.bublikov.shoppinglist.presentation.ShopItemFragment"
+        android:label="Товар"
+        tools:layout="@layout/fragment_shop_item">
+
+        <argument
+            android:name="screen_mode"
+            app:argType="string" />
+        <argument
+            android:name="shop_item_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+</navigation>

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,11 +55,21 @@ public class MainFragment extends Fragment {
         }
 
         fabAddItem.setOnClickListener(v -> {
-            launchShopItemFragment(ShopItemFragment.newInstanceAddItem());
+            Bundle args = new Bundle();
+            args.putString("screen_mode", "mode_add");
+            args.putInt("shop_item_id", -1);
+
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_mainFragment_to_shopItemFragment, args);
         });
 
         shopListAdapter.setOnShopItemClickListener(shopItem -> {
-            launchShopItemFragment(ShopItemFragment.newInstanceEditItem(shopItem.getId()));
+            Bundle args = new Bundle();
+            args.putString("screen_mode", "mode_edit");
+            args.putInt("shop_item_id", shopItem.getId());
+
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_mainFragment_to_shopItemFragment, args);
         });
 
         shopListAdapter.setOnDeleteItemClickListener(shopItem -> {
@@ -74,13 +85,6 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mainViewModel.loadShopList();
-    }
-
-    private void launchShopItemFragment(Fragment fragment) {
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.main_container, fragment)
-                .addToBackStack(null)
-                .commit();
     }
 
     private void setupRecyclerView() {

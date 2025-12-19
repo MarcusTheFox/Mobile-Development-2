@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ import ru.mirea.bublikov.shoppinglist.R;
 
 public class ShopItemFragment extends Fragment {
 
-    private static final String SCREEN_MODE = "extra_mode";
-    private static final String SHOP_ITEM_ID = "extra_shop_item_id";
+    private static final String SCREEN_MODE = "screen_mode";
+    private static final String SHOP_ITEM_ID = "shop_item_id";
     private static final String MODE_ADD = "mode_add";
     private static final String MODE_EDIT = "mode_edit";
 
@@ -39,23 +40,6 @@ public class ShopItemFragment extends Fragment {
 
     private String screenMode = "";
     private int shopItemId = ShopItem.UNDEFINED_ID;
-
-    public static ShopItemFragment newInstanceAddItem() {
-        Bundle args = new Bundle();
-        args.putString(SCREEN_MODE, MODE_ADD);
-        ShopItemFragment fragment = new ShopItemFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static ShopItemFragment newInstanceEditItem(int shopItemId) {
-        Bundle args = new Bundle();
-        args.putString(SCREEN_MODE, MODE_EDIT);
-        args.putInt(SHOP_ITEM_ID, shopItemId);
-        ShopItemFragment fragment = new ShopItemFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Nullable
     @Override
@@ -93,7 +77,7 @@ public class ShopItemFragment extends Fragment {
     private void observeViewModels() {
         shopItemViewModel.shouldCloseScreen.observe(getViewLifecycleOwner(), shouldClose -> {
             if (shouldClose) {
-                getParentFragmentManager().popBackStack();
+                NavHostFragment.findNavController(this).popBackStack();
             }
         });
 

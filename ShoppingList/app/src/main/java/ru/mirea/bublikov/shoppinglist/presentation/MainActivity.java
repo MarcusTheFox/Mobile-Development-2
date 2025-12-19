@@ -1,12 +1,11 @@
 package ru.mirea.bublikov.shoppinglist.presentation;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import ru.mirea.bublikov.shoppinglist.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,27 +17,10 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
 
-        bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
-            if (item.getItemId() == R.id.action_shop_list) {
-                selectedFragment = new MainFragment();
-            } else if (item.getItemId() == R.id.action_profile) {
-                selectedFragment = new ProfileFragment();
-            }
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
 
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_container, selectedFragment)
-                        .commit();
-                return true;
-            }
-            return false;
-        });
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, new MainFragment())
-                    .commit();
-        }
+        NavigationUI.setupWithNavController(bottomNav, navController);
     }
 }
